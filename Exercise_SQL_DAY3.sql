@@ -6,6 +6,7 @@ SELECT count(*) from employees;
 SELECT count(*) from salaries;
 SELECT count(*) from titles;
 
+
 -- Task2
 SELECT first_name FROM employees WHERE first_name = "Mark";
 
