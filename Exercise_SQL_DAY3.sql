@@ -22,7 +22,6 @@ JOIN titles t on e.emp_no = t.emp_no
 
 SELECT departments, COUNT(departments.dep_no), dept_emp, COUNT(dept_emp.emp_no), dept_manager,  COUNT(dept_manager.emp_no), employees, COUNT(employees.emp_no), salaries, COUNT(salaries.emp_no), titles, COUNT(titles.emp_no) FROM employees;
 
-
 -- 1. Report -- 
 
 SELECT COUNT(*) FROM employees;
