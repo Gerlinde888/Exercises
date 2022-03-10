@@ -1,86 +1,86 @@
--- Task1
-SELECT count(*) from departments;
-SELECT count(*) from dept_emp;
-SELECT count(*) from dept_manager;
-SELECT count(*) from employees;
-SELECT count(*) from salaries;
-SELECT count(*) from titles;
+
+-- MySQL - DAY3
+
+-- 1. Report -- 
 
 
--- Task2
-SELECT first_name FROM employees WHERE first_name = "Mark";
+SELECT
+COUNT(d.dept_no), COUNT(de.emp_no),COUNT(dm.emp_no),COUNT(e.emp_no),COUNT(s.emp_no),COUNT(t.dept_no)
+FROM
+(
+SELECT
+dept_no,
+COUNT(dept_no) AS rows
+FROM
+departmens d JOIN dept_emp de on d.dept_no = de.dept.no
+JOIN dept_manager dm on d.dept_no = dem.dept.no
+JOIN employees e on e.emp_no = dm.emp_no
+JOIN salaries s on e.emp_no = s.emp_no
+JOIN titles t on e.emp_no = t.emp_no  
+) AS line_items
+;
 
--- Task3
-select first_name, last_name FROM employees where first_name = "Eric" and last_name like "a%";
 
--- Tastk4
-SELECT first_name, last_name, hire_date FROM employees WHERE hire_date >= 1985;
+SELECT departments, COUNT(departments.dep_no), dept_emp, COUNT(dept_emp.emp_no), dept_manager,  COUNT(dept_manager.emp_no), employees, COUNT(employees.emp_no), salaries, COUNT(salaries.emp_no), titles, COUNT(titles.emp_no) FROM employees;
 
--- Task5
-SELECT first_name, last_name, hire_date
-FROM employees
-WHERE hire_date BETWEEN "1990-01-01" AND "1997-12-31";
 
--- Task6
-SELECT first_name, last_name
-FROM employees
-WHERE emp_no in (SELECT emp_no
-                 FROM salaries
-                 WHERE salary > 70000);
+-- 1. Report -- 
 
--- Task7
+SELECT COUNT(*) FROM employees;
 
-JOIN WAY
+-- 2. Report -- 
 
-SELECT employees.first_name, employees.last_name, employees.hire_date, departments.dept_name
-FROM employees
-JOIN dept_emp on employees.emp_no = dept_emp.emp_no
-JOIN departments on departments.dept_no = dept_emp.dept_no
-WHERE employees.hire_date > 1992 and departments.dept_name = "Research";
+SELECT COUNT(emp_no) FROM employees WHERE first_name = "Mark";
 
-OR SUBQUERY WAY
+-- 3. Report -- 
 
-SELECT employees.first_name, employees.last_name
-FROM employees
-WHERE employees.emp_no in (SELECT dept_emp.emp_no
-                 FROM dept_emp
-                 WHERE dept_emp.dept_no IN 
-                          (SELECT departments.dept_no
-                           FROM departments
-                           WHERE departments.dept_name = "Research"))
-                           AND employees.hire_date BETWEEN
- "1992-01-01" AND CURRENT_DATE()
- AND employees.emp_no in (SELECT salaries.emp_no
-                          FROM salaries
-                          WHERE salaries.to_date > CURRENT_DATE())
-;                         
+SELECT COUNT(emp_no) FROM employees WHERE first_name = "Mark" AND  last_name LIKE 'A%';
 
--- Task8
-SELECT employees.first_name, employees.last_name
-FROM employees
-WHERE employees.emp_no in (SELECT dept_emp.emp_no
-                           FROM dept_emp
-                           WHERE dept_emp.dept_no in 
-                           (SELECT departments.dept_no
-                            FROM departments
-                            WHERE departments.dept_name = "Finance"))
-                            AND employees.hire_date BETWEEN
-                            "1985-01-01" AND CURRENT_DATE()
-                            AND employees.emp_no in (SELECT salaries.emp_no
-                            FROM salaries
-                            WHERE salaries.to_date > CURRENT_DATE()
-                            AND salaries.salary > 75000);   
-                                                                       
+-- 4. Report -- 
 
--- Task9
-SELECT employees.first_name, employees.last_name, employees.birth_date, employees.gender, employees.hire_date, titles.title, salaries.salary
-FROM employees
-JOIN titles on employees.emp_no = titles.emp_no
-JOIN salaries on employees.emp_no = salaries.emp_no
+SELECT COUNT(emp_no) FROM employees WHERE hire_date > "1984-12-31";
 
--- Task10
-SELECT employees.first_name, employees.last_name, employees.birth_date, employees.gender, employees.hire_date, titles.title, salaries.salary
-FROM employees
-JOIN titles on employees.emp_no = titles.emp_no
-JOIN salaries on employees.emp_no = salaries.emp_no
-WHERE titles.title = "manager";
+-- 5. Report -- 
+
+SELECT COUNT(emp_no) FROM employees WHERE hire_date BETWEEN "1989-12-31" AND "1998-01-01";
+
+-- 6. Report -- 
+
+SELECT COUNT(emp_no) FROM employees WHERE EXISTS (
+SELECT salary FROM  salaries WHERE salary > 70000);
+
+SELECT COUNT(salaries.emp_no), 
+employees.l_name FROM employees INNER JOIN salaries on employees.emp_no = salaries.emp_no
+
+WHERE EXISTS (
+
+    SELECT
+salary
+FROM 
+salaries
+WHERE
+salary > 70000) AND
+;
+
+-- 7. Report -- 
+
+
+SELECT employees.last_name, employees.first_name, employees.hire_date FROM employees LEFT JOIN dept_emp on employees.emp_no = dept_emp.emp_no WHERE hire_date > 1991 and < 1993 <
+
+RIGHT JOIN department on department.dept_no = dept_emp.dept_no WHERE department.dept_name = "Research";
+
+
+SELECT employees.last_name  FROM employees 
+WHERE employees.hire_date > "1991-12-31" IN (
+SELECT dept_name FROM departments WHERE departments.dept_name = "Research");
+
+
+SELECT employees.last_name, employees.first_name, employees.hire_date FROM employees LEFT JOIN dept_emp on employees.emp_no = dept_emp.emp_no WHERE employees.hire_date BETWEEN "1991-12-31" AND CURRENT_DATE() IN (
+SELECT dept_name FROM departments WHERE departments.dept_name = "Research");
+
+
+-- 8. Report -- 
+
+SELECT employees.last_name, employees.first_name, employees.hire_date, COUNT(employees.emp_no) FROM employees LEFT JOIN dept_emp on employees.emp_no = dept_emp.emp_no WHERE 
+WHERE employees.hire_date = "1991-12-31" IN (
+SELECT dept_name FROM departments WHERE departments.dept_name = "Research");
